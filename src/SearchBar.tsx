@@ -2,16 +2,15 @@ import { useState } from "react"
 import { Field, FieldDescription, FieldLabel } from "./components/ui/field"
 import { Input } from "./components/ui/input"
 import { Button } from "./components/ui/button"
-import { useUsername } from "./hooks/useUsername"
+import { useNavigate } from "react-router"
 
 export function SearchBar() {
   const [searchQuery, setSearchQuery] = useState("")
-  const { setUsername } = useUsername()
+  const navigate = useNavigate()
 
   const handleSearch = () => {
     if (!searchQuery.trim()) return
-
-    setUsername(searchQuery)
+    navigate(`/user/${searchQuery}`)
   }
 
   return (

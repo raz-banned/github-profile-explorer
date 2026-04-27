@@ -1,3 +1,9 @@
+import { UserProfile } from "@/UserProfile"
+
 export function UserPage() {
-  return
+  return (
+    <main>
+      <UserProfile />
+    </main>
+  )
 }

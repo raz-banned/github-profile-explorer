@@ -1,11 +1,11 @@
+import { useNavigate } from "react-router"
 import { Button } from "./components/ui/button"
-import { useUsername } from "./hooks/useUsername"
 
 export function NavButtons() {
-  const { setUsername } = useUsername()
+  const navigate = useNavigate()
 
   const handleClick = (username: string) => {
-    setUsername(username)
+    navigate(`/user/${username}`)
   }
 
   return (

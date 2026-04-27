@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
-import { octokit } from "./api/github"
 import { UserCard } from "./UserCard"
 import type { GithubUser } from "./types/GithubUser"
+import { octokit } from "./api/github"
 
 export function UserProfile() {
   const [user, setUser] = useState<GithubUser | null>(null)
