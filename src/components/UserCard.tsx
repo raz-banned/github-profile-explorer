@@ -1,6 +1,6 @@
 import { RiHeartFill, RiMapPinLine } from "@remixicon/react"
-import { Badge } from "./components/ui/badge"
-import { Button } from "./components/ui/button"
+import { Badge } from "./ui/badge"
+import { Button } from "./ui/button"
 import {
   Card,
   CardAction,
@@ -8,10 +8,10 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "./components/ui/card"
-import type { GithubUser } from "./types/GithubUser"
+} from "./ui/card"
+import type { GithubUser } from "../types/GithubUser"
 import { toast } from "sonner"
-import { Skeleton } from "./components/ui/skeleton"
+import { LoadingSkeleton } from "./LoadingSkeleton"
 
 export function UserCard({ user }: { user: GithubUser | null }) {
   const handleCopy = () => {
@@ -41,7 +41,7 @@ export function UserCard({ user }: { user: GithubUser | null }) {
       <CardHeader className="mt-8">
         <CardAction>
           <Badge variant="secondary">
-            <RiHeartFill color="rgba(224,176,255,1)" />
+            <RiHeartFill className="text-purple-300" />
             <span>{user.followers}</span>
           </Badge>
         </CardAction>
@@ -49,7 +49,7 @@ export function UserCard({ user }: { user: GithubUser | null }) {
         <CardTitle>{user.name || "Неизвестное имя"}</CardTitle>
 
         <span className="flex gap-1">
-          <RiMapPinLine size={18} color="rgba(224,176,255,1)" />
+          <RiMapPinLine size={18} className="text-purple-300" />
           {user.location || "Неизвестная локация"}
         </span>
 
@@ -62,15 +62,6 @@ export function UserCard({ user }: { user: GithubUser | null }) {
       </CardFooter>
     </Card>
   ) : (
-    <Card className="w-full max-w-sm pt-0">
-      <Skeleton className="aspect-video w-full" />
-      <CardHeader>
-        <Skeleton className="h-5 w-2/3" />
-        <Skeleton className="h-4 w-1/2" />
-      </CardHeader>
-      <CardFooter>
-        <Skeleton className="h-9 w-full" />
-      </CardFooter>
-    </Card>
+    <LoadingSkeleton />
   )
 }

@@ -1,4 +1,4 @@
-import githubLogo from "./assets/github-logo.png"
+import githubLogo from "../assets/github-logo.png"
 import { Navbar } from "./Navbar"
 
 export function Header() {

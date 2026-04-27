@@ -1,12 +1,17 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, type Dispatch, type SetStateAction } from "react"
 import { UserCard } from "./UserCard"
-import type { GithubUser } from "./types/GithubUser"
-import { octokit } from "./api/github"
+import type { GithubUser } from "../types/GithubUser"
+import { octokit } from "../api/github"
 import { useParams } from "react-router"
 import { RequestError } from "octokit"
 
-export function UserProfile() {
+export function UserProfile({
+  onError,
+}: {
+  onError: Dispatch<SetStateAction<RequestError | Error | null>>
+}) {
   const [user, setUser] = useState<GithubUser | null>(null)
+
   const { login } = useParams()
 
   if (!login) {
@@ -22,18 +27,13 @@ export function UserProfile() {
           username: login,
         })
         if (!isMounted) return
-        console.log(data)
         setUser(data)
-      } catch (err: RequestError | unknown) {
+      } catch (err) {
         if (!isMounted) return
         if (err instanceof RequestError) {
-          if (err.status) {
-            console.log(`Error ${err.status}: ${err.message}`)
-          } else {
-            console.error("Error fetching user profile:", err)
-          }
+          onError(err)
         } else {
-          console.error("Unexpected error:", err)
+          onError(new Error("Неожиданная ошибка"))
         }
       }
     }
@@ -42,7 +42,7 @@ export function UserProfile() {
     return () => {
       isMounted = false
     }
-  }, [login])
+  }, [login, onError])
 
   return <UserCard user={user} />
 }
