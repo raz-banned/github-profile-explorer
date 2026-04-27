@@ -10,8 +10,8 @@ import {
   CardTitle,
 } from "./components/ui/card"
 import type { GithubUser } from "./types/GithubUser"
-import { Spinner } from "./components/ui/spinner"
 import { toast } from "sonner"
+import { Skeleton } from "./components/ui/skeleton"
 
 export function UserCard({ user }: { user: GithubUser | null }) {
   const handleCopy = () => {
@@ -25,34 +25,52 @@ export function UserCard({ user }: { user: GithubUser | null }) {
   }
 
   return user ? (
-    <Card className="relative mx-auto w-full max-w-sm pt-0">
-      <div className="absolute inset-0 z-30 aspect-video bg-black/35" />
-      <img
-        src={user.avatar_url}
-        alt="User avatar"
-        className="relative z-20 aspect-video w-full object-cover brightness-60 grayscale dark:brightness-40"
-      />
-      <CardHeader>
+    <Card className="w-full max-w-sm overflow-hidden pt-0">
+      <div className="relative h-24 w-full">
+        <img
+          src={user.avatar_url || "https://via.placeholder.com/150"}
+          alt="User avatar"
+          className="h-full w-full object-cover blur-sm brightness-60"
+        />
+        <img
+          src={user.avatar_url || "https://via.placeholder.com/150"}
+          alt="User avatar round"
+          className="absolute -bottom-8 left-4 h-16 w-16 rounded-full border-4 border-background"
+        />
+      </div>
+      <CardHeader className="mt-8">
         <CardAction>
           <Badge variant="secondary">
             <RiHeartFill color="rgba(224,176,255,1)" />
             <span>{user.followers}</span>
           </Badge>
         </CardAction>
-        <CardTitle>{user.name}</CardTitle>
+
+        <CardTitle>{user.name || "Неизвестное имя"}</CardTitle>
+
         <span className="flex gap-1">
           <RiMapPinLine size={18} color="rgba(224,176,255,1)" />
-          {user.location}
+          {user.location || "Неизвестная локация"}
         </span>
-        <CardDescription>{user.bio}</CardDescription>
+
+        <CardDescription>{user.bio || "Нет описания"}</CardDescription>
       </CardHeader>
       <CardFooter>
         <Button variant="outline" className="w-full" onClick={handleCopy}>
-          Copy github link
+          Скопировать ссылку
         </Button>
       </CardFooter>
     </Card>
   ) : (
-    <Spinner />
+    <Card className="w-full max-w-sm pt-0">
+      <Skeleton className="aspect-video w-full" />
+      <CardHeader>
+        <Skeleton className="h-5 w-2/3" />
+        <Skeleton className="h-4 w-1/2" />
+      </CardHeader>
+      <CardFooter>
+        <Skeleton className="h-9 w-full" />
+      </CardFooter>
+    </Card>
   )
 }

@@ -12,7 +12,7 @@ export function App() {
       <UsernameContext value={{ username, setUsername }}>
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/user/:username" element={<UserPage />} />
+          <Route path="/user/:login" element={<UserPage />} />
         </Routes>
       </UsernameContext>
     </>
