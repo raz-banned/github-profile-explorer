@@ -2,15 +2,23 @@ import { useState } from "react"
 import { Field, FieldDescription, FieldLabel } from "./components/ui/field"
 import { Input } from "./components/ui/input"
 import { Button } from "./components/ui/button"
+import { useUsername } from "./hooks/useUsername"
 
 export function SearchBar() {
   const [searchQuery, setSearchQuery] = useState("")
+  const { setUsername } = useUsername()
+
+  const handleSearch = () => {
+    if (!searchQuery.trim()) return
+
+    setUsername(searchQuery)
+  }
 
   return (
     <Field className="w-full max-w-lg">
       <FieldLabel
         htmlFor="input-field-username"
-        className="text-lg font-medium"
+        className="text-sm font-medium"
       >
         Имя пользователя
       </FieldLabel>
@@ -22,7 +30,7 @@ export function SearchBar() {
         value={searchQuery}
         className="min-h-8 w-full rounded-md border p-2"
       />
-      <Button onClick={() => {}} className="w-full">
+      <Button onClick={handleSearch} className="w-full">
         Поиск
       </Button>
       <FieldDescription className="text-sm text-muted-foreground">
