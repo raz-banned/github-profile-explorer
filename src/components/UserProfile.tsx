@@ -1,48 +1,45 @@
-import { useEffect, useState, type Dispatch, type SetStateAction } from "react"
+import { useState } from "react"
 import { UserCard } from "./UserCard"
 import type { GithubUser } from "../types/GithubUser"
 import { octokit } from "../api/github"
 import { useParams } from "react-router"
-import { RequestError } from "octokit"
+import type { GithubRepos } from "@/types/GithubRepo"
 
-export function UserProfile({
-  onError,
-}: {
-  onError: Dispatch<SetStateAction<RequestError | Error | null>>
-}) {
-  const [user, setUser] = useState<GithubUser | null>(null)
+import { UserRepos } from "./UserRepos"
+import { useFetch } from "@/hooks/useFetch"
+import { useErrorContext } from "@/hooks/useErrorContext"
+
+export function UserProfile() {
+  const [currentPage, setCurrentPage] = useState(1)
+
+  const { setUserError, setRepoError } = useErrorContext()
 
   const { login } = useParams()
-
   if (!login) {
     throw new Error("Login parameter is missing")
   }
 
-  useEffect(() => {
-    let isMounted = true
+  const user = useFetch<GithubUser>(
+    async () =>
+      await octokit.rest.users.getByUsername({
+        username: login,
+      }),
+    setUserError
+  )
+  const userRepos = useFetch<GithubRepos>(
+    async () =>
+      await octokit.rest.repos.listForUser({
+        username: login,
+        per_page: 10,
+        page: currentPage,
+      }),
+    setRepoError
+  )
 
-    const getUserProfile = async () => {
-      try {
-        const { data } = await octokit.rest.users.getByUsername({
-          username: login,
-        })
-        if (!isMounted) return
-        setUser(data)
-      } catch (err) {
-        if (!isMounted) return
-        if (err instanceof RequestError) {
-          onError(err)
-        } else {
-          onError(new Error("Неожиданная ошибка"))
-        }
-      }
-    }
-    getUserProfile()
-
-    return () => {
-      isMounted = false
-    }
-  }, [login, onError])
-
-  return <UserCard user={user} />
+  return (
+    <>
+      <UserCard user={user} />
+      <UserRepos repos={userRepos} />
+    </>
+  )
 }
