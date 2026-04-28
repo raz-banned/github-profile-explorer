@@ -3,7 +3,7 @@ import { UserCard } from "./UserCard"
 import type { GithubUser } from "../types/GithubUser"
 import { octokit } from "../api/github"
 import { useParams } from "react-router"
-import type { GithubRepos } from "@/types/GithubRepo"
+import type { GithubRepo } from "@/types/GithubRepo"
 
 import { UserRepos } from "./UserRepos"
 import { useFetch } from "@/hooks/useFetch"
@@ -26,11 +26,11 @@ export function UserProfile() {
       }),
     setUserError
   )
-  const userRepos = useFetch<GithubRepos>(
+  const userRepos = useFetch<GithubRepo[]>(
     async () =>
       await octokit.rest.repos.listForUser({
         username: login,
-        per_page: 10,
+        per_page: 30,
         page: currentPage,
       }),
     setRepoError
@@ -39,7 +39,7 @@ export function UserProfile() {
   return (
     <>
       <UserCard user={user} />
-      <UserRepos repos={userRepos} />
+      <UserRepos userRepos={userRepos} reposLength={user?.public_repos ?? 0} />
     </>
   )
 }
