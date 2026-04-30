@@ -1,7 +1,7 @@
 import { Card, CardAction, CardFooter, CardHeader } from "./ui/card"
 import { Skeleton } from "./ui/skeleton"
 
-export function LoadingSkeleton() {
+export function UserSkeleton() {
   return (
     <Card className="w-full max-w-sm overflow-hidden pt-0">
       <Skeleton className="h-24 w-full" />

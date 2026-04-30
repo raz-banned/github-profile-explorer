@@ -4,10 +4,14 @@ import type { RequestError } from "octokit"
 
 export function ErrorsProvider({ children }: { children: ReactNode }) {
   const [userError, setUserError] = useState<RequestError | Error | null>(null)
-  const [repoError, setRepoError] = useState<RequestError | Error | null>(null)
+  const [reposError, setReposError] = useState<RequestError | Error | null>(
+    null
+  )
 
   return (
-    <ErrorsContext value={{ userError, repoError, setUserError, setRepoError }}>
+    <ErrorsContext
+      value={{ userError, reposError, setUserError, setReposError }}
+    >
       {children}
     </ErrorsContext>
   )
