@@ -29,6 +29,7 @@ function UserPage() {
       language: "C",
       stargazers_count: 24100,
       owner: { login: "torvalds" },
+      topics: ["octocat", "atom", "electron", "API"],
     },
     {
       id: 2,

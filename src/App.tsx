@@ -12,11 +12,10 @@ export function App() {
         <Routes>
           <Route path="*" element={<NotFoundPage />} />
           <Route path="/" element={<HomePage />} />
-          <Route path="/user/:login" element={<UserPage />} />
-          <Route
-            path="/user/:login/repos/:repoName"
-            element={<RepoDetailsPage />}
-          />
+          <Route path="user/:login">
+            <Route index element={<UserPage />} />
+            <Route path="repos/:repoName" element={<RepoDetailsPage />} />
+          </Route>
         </Routes>
       </ErrorsProvider>
     </>

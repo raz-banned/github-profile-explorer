@@ -7,7 +7,6 @@ import { useCallback } from "react"
 
 export const useRepoData = () => {
   const { login, repoName } = useParams() as { login: string; repoName: string }
-
   const { setReposError } = useErrorContext()
 
   const fetchFn = useCallback(
