@@ -11,55 +11,8 @@ import { Toaster } from "sonner"
 
 function UserPage() {
   const { userError, reposError } = useErrorContext()
-
-  const mockUser = {
-    login: "torvalds",
-    public_repos: 10,
-    followers: 100000,
-    avatar_url: "https://avatars.githubusercontent.com/u/1024025?v=4",
-    name: "Linus Torvalds",
-    location: "Portland, OR",
-    bio: "Software Engineer, Creator of Linux and Git",
-  }
-
-  const mockReposUser = [
-    {
-      id: 1,
-      name: "linux",
-      language: "C",
-      stargazers_count: 24100,
-      owner: { login: "torvalds" },
-      topics: ["octocat", "atom", "electron", "API"],
-    },
-    {
-      id: 2,
-      name: "uemacs",
-      language: "C",
-      stargazers_count: 719,
-      owner: { login: "torvalds" },
-    },
-    {
-      id: 3,
-      name: "john",
-      language: "JavaScript",
-      stargazers_count: 1000,
-      owner: { login: "torvalds" },
-    },
-    {
-      id: 4,
-      name: "jane",
-      language: "C++",
-      stargazers_count: 600,
-      owner: { login: "torvalds" },
-    },
-    {
-      id: 5,
-      name: "mark",
-      language: "Python",
-      stargazers_count: 300,
-      owner: { login: "torvalds" },
-    },
-  ]
+  const { data: user, isLoading: isUserLoading } = useUserData()
+  const { data: userRepos, isLoading: areReposLoading } = useReposData()
 
   if (userError) {
     return (
@@ -78,24 +31,27 @@ function UserPage() {
     )
   }
 
-  if (!mockUser) return <UserSkeleton />
-  if (!mockReposUser || !mockReposUser.length) return <ReposSkeleton />
-
   return (
-    <div className="mx-auto flex min-h-dvh w-full max-w-7xl flex-col gap-8 p-8 md:flex-row">
-      <aside className="mx-auto min-w-xs flex-1/4 shrink-0 md:border-r md:border-border md:pr-8">
-        <div className="sticky top-20 md:top-8">
-          <UserCard user={mockUser} />
-        </div>
-      </aside>
-      <main className="min-h-0 flex-3/4">
-        <UserRepos
-          userRepos={mockReposUser}
-          reposLength={mockUser.public_repos ?? 0}
-        />
-      </main>
-      <Toaster />
-    </div>
+    <>
+      <div className="mx-auto flex max-w-7xl flex-col gap-8 p-8 md:flex-row">
+        <aside className="mx-auto min-w-xs shrink-0 md:top-8 md:border-r md:border-border md:pr-8">
+          {isUserLoading ? <UserSkeleton /> : user && <UserCard user={user} />}
+        </aside>
+        <main className="flex-1">
+          {areReposLoading ? (
+            <ReposSkeleton />
+          ) : (
+            userRepos && (
+              <UserRepos
+                userRepos={userRepos}
+                reposLength={user?.public_repos ?? 0}
+              />
+            )
+          )}
+        </main>
+        <Toaster />
+      </div>
+    </>
   )
 }
 

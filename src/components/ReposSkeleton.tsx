@@ -3,7 +3,7 @@ import { Skeleton } from "./ui/skeleton"
 
 export function ReposSkeleton() {
   return (
-    <div className="flex w-full max-w-4xl flex-col gap-4">
+    <div className="flex max-w-4xl flex-col gap-4">
       <div className="mb-6 flex items-baseline gap-3">
         <Skeleton className="h-5 w-44" />
       </div>

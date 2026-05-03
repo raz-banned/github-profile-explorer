@@ -12,10 +12,6 @@ export function RepoDetails({
 }: {
   repo: GithubRepoDetails | GithubRepo
 }) {
-  if (!repo) {
-    return <div>Loading...</div>
-  }
-
   const formattedDate = new Date(repo.updated_at ?? "").toLocaleDateString(
     "ru-RU",
     {
