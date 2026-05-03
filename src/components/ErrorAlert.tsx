@@ -9,16 +9,16 @@ export function ErrorAlert({
   message: string
 }) {
   const STATUS_MESSAGES: Record<number, string> = {
-    404: "Пользователь не найден",
+    404: "Не найдено",
     403: "Превышен лимит запросов",
     401: "Нет доступа",
-    500: "Ошибка сервера GitHub",
+    500: "Ошибка сервера",
   }
 
-  const errorMessage = status ? STATUS_MESSAGES[status] : message
+  const errorMessage = status ? (STATUS_MESSAGES[status] ?? message) : message
 
   return (
-    <div className="flex flex-1 items-center justify-center">
+    <div className="flex min-h-screen flex-1 items-center justify-center">
       <Alert variant="destructive" className="max-w-md">
         <RiErrorWarningLine />
         <AlertTitle>{status ? `Ошибка: ${status}` : "Ошибка"}</AlertTitle>

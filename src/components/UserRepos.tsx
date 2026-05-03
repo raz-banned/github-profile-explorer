@@ -3,8 +3,8 @@ import { Button } from "./ui/button"
 import { Card, CardAction, CardFooter, CardHeader, CardTitle } from "./ui/card"
 import { Badge } from "./ui/badge"
 import { RiStarFill } from "@remixicon/react"
-import { useState } from "react"
-import { ReposSkeleton } from "./ReposSkeleton"
+import { useMemo, useState } from "react"
+import { Link } from "react-router"
 
 const languageColors: Record<string, string> = {
   JavaScript: "#f1e05a",
@@ -23,11 +23,26 @@ export function UserRepos({
   userRepos,
   reposLength,
 }: {
-  userRepos: GithubRepo[] | null
+  userRepos: GithubRepo[]
   reposLength: number
 }) {
   const [activeLanguage, setActiveLanguage] = useState("All")
-  if (!userRepos) return <ReposSkeleton />
+  const [sortType, setSortType] = useState("")
+
+  const filteredRepos = useMemo(() => {
+    return userRepos
+      .filter((repo) => {
+        const matchesLanguage =
+          activeLanguage === "All" || repo.language === activeLanguage
+        return matchesLanguage
+      })
+      .sort((a, b) => {
+        if (sortType === "stars" && a.stargazers_count && b.stargazers_count) {
+          return b.stargazers_count - a.stargazers_count
+        }
+        return 0
+      })
+  }, [activeLanguage, userRepos, sortType])
 
   const languages = [
     ...new Set(
@@ -36,11 +51,6 @@ export function UserRepos({
         .filter((language): language is string => Boolean(language))
     ),
   ]
-
-  const filteredRepos =
-    activeLanguage === "All"
-      ? userRepos
-      : userRepos.filter((repo) => repo.language === activeLanguage)
 
   return (
     <div className="flex w-full max-w-4xl flex-col gap-4">
@@ -67,38 +77,52 @@ export function UserRepos({
             {language}
           </Button>
         ))}
+        <Button
+          variant={sortType === "stars" ? "default" : "secondary"}
+          size="default"
+          className="ml-auto"
+          onClick={() =>
+            setSortType(() => (sortType === "stars" ? "" : "stars"))
+          }
+        >
+          Сортировать по звездам
+        </Button>
       </div>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {filteredRepos.map((repo) => (
-          <Card
+          <Link
             key={repo.id}
-            className="flex flex-col justify-between transition-colors hover:bg-accent"
+            to={`/user/${repo.owner.login}/repos/${repo.name}`}
           >
-            <CardHeader>
-              <CardAction>
-                <Badge variant="outline" className="flex gap-1">
-                  <RiStarFill className="text-yellow-300" />
-                  <span>{repo.stargazers_count}</span>
-                </Badge>
-              </CardAction>
-              <CardTitle className="truncate text-base">{repo.name}</CardTitle>
-            </CardHeader>
-            <CardFooter>
-              <CardAction>
-                <Badge variant="secondary">
-                  <span
-                    className="h-2.5 w-2.5 rounded-full"
-                    style={{
-                      background:
-                        languageColors[repo.language || ""] ||
-                        languageColors["Default"],
-                    }}
-                  />
-                  {repo.language || "Неизвестно"}
-                </Badge>
-              </CardAction>
-            </CardFooter>
-          </Card>
+            <Card className="flex flex-col justify-between transition-colors hover:bg-accent">
+              <CardHeader>
+                <CardAction>
+                  <Badge variant="outline" className="flex gap-1">
+                    <RiStarFill className="text-yellow-300" />
+                    <span>{repo.stargazers_count}</span>
+                  </Badge>
+                </CardAction>
+                <CardTitle className="truncate text-base">
+                  {repo.name}
+                </CardTitle>
+              </CardHeader>
+              <CardFooter>
+                <CardAction>
+                  <Badge variant="secondary">
+                    <span
+                      className="h-2.5 w-2.5 rounded-full"
+                      style={{
+                        background:
+                          languageColors[repo.language || ""] ||
+                          languageColors["Default"],
+                      }}
+                    />
+                    {repo.language || "Неизвестно"}
+                  </Badge>
+                </CardAction>
+              </CardFooter>
+            </Card>
+          </Link>
         ))}
         {filteredRepos.length === 0 && (
           <div className="col-span-full py-16 text-center text-muted-foreground">

@@ -8,18 +8,23 @@ export const useFetch = <T,>(
   onError: Dispatch<SetStateAction<RequestError | Error | null>>
 ) => {
   const [data, setData] = useState<T | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
   const navigate = useNavigate()
 
   useEffect(() => {
     let isMounted = true
-
     const fetchData = async () => {
+      setData(null)
+      setIsLoading(true)
+
       try {
         const { data } = await fn()
         if (!isMounted) return
+        setIsLoading(false)
         setData(data)
       } catch (err) {
         if (!isMounted) return
+        setIsLoading(false)
         if (err instanceof RequestError) {
           if (err.status === 404) {
             navigate("*")
@@ -36,7 +41,7 @@ export const useFetch = <T,>(
     return () => {
       isMounted = false
     }
-  }, [fn, onError])
+  }, [fn, onError, navigate])
 
-  return data
+  return { data, isLoading }
 }

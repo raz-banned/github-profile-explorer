@@ -11,11 +11,8 @@ import {
 } from "./ui/card"
 import type { GithubUser } from "../types/GithubUser"
 import { toast } from "sonner"
-import { UserSkeleton } from "./UserSkeleton"
 
-export function UserCard({ user }: { user: GithubUser | null }) {
-  if (!user) return <UserSkeleton />
-
+export function UserCard({ user }: { user: GithubUser }) {
   const handleCopy = () => {
     navigator.clipboard.writeText(user.url)
     toast.success("Успешно скопировано")

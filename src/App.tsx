@@ -3,6 +3,7 @@ import HomePage from "./pages/home-page"
 import UserPage from "./pages/user-page"
 import { ErrorsProvider } from "./context/ErrorsProvider"
 import NotFoundPage from "./pages/not-found-page"
+import RepoDetailsPage from "./pages/repo-details-page"
 
 export function App() {
   return (
@@ -12,6 +13,10 @@ export function App() {
           <Route path="*" element={<NotFoundPage />} />
           <Route path="/" element={<HomePage />} />
           <Route path="/user/:login" element={<UserPage />} />
+          <Route
+            path="/user/:login/repos/:repoName"
+            element={<RepoDetailsPage />}
+          />
         </Routes>
       </ErrorsProvider>
     </>
