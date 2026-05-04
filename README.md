@@ -1,21 +1,44 @@
-# React + TypeScript + Vite + shadcn/ui
+# GitHub Profile Explorer
 
-This is a template for a new Vite project with React, TypeScript, and shadcn/ui.
+A web app for exploring GitHub profiles and repositories built with React and TypeScript.
 
-## Adding components
+![GitHub Profile Explorer](/public/homepage.png)
 
-To add components to your app, run the following command:
+## Features
+
+- Search any GitHub user by username
+- View profile info — avatar, bio, location, followers
+- Browse repositories with language filter and sort by stars
+- Detailed repository page — topics, license, open issues, last updated
+- Loading skeletons for all async states
+- Error handling with descriptive messages
+
+## Stack
+
+- **React** + **TypeScript**
+- **React Router** — client-side routing
+- **shadcn/ui** + **Tailwind CSS** — UI components and styling
+- **Octokit** — GitHub REST API client
+
+## Getting Started
 
 ```bash
-npx shadcn@latest add button
+git clone https://github.com/raz-banned/github-profile-explorer
+cd github-profile-explorer
+npm install
+npm run dev
 ```
 
-This will place the ui components in the `src/components` directory.
+> Note: The GitHub API allows 60 unauthenticated requests per hour. To increase the limit, add a personal access token to the Octokit instance in `src/api/github.ts`.
 
-## Using components
+## Project Structure
 
-To use the components in your app, import them as follows:
-
-```tsx
-import { Button } from "@/components/ui/button"
+```
+src/
+├── components/     # UI components
+├── hooks/          # Custom hooks (useFetch, useUserData, useReposData)
+├── context/        # Error context
+├── pages/          # Route-level components
+├── types/          # TypeScript interfaces
+└── utils/          # Language color mappings
 ```
