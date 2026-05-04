@@ -12,23 +12,24 @@ export function RepoDetails({
 }: {
   repo: GithubRepoDetails | GithubRepo
 }) {
-  const formattedDate = new Date(repo.updated_at ?? "").toLocaleDateString(
-    "ru-RU",
-    {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    }
-  )
+  const formattedDate = repo.updated_at
+    ? new Date(repo.updated_at).toLocaleDateString("ru-RU", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      })
+    : "Неизвестно"
 
   return (
     <div className="mx-auto flex min-h-dvh max-w-7xl flex-col gap-12 px-8 pt-8 md:flex-row">
       <main className="flex flex-col gap-4 md:flex-1">
         <p className="text-sm text-muted-foreground">
-          @{repo.owner?.login} / {repo.name}
+          @{repo.owner.login} / {repo.name}
         </p>
         <h1 className="text-3xl font-bold">{repo.name}</h1>
-        <p className="max-w-prose text-muted-foreground">{repo.description}</p>
+        <p className="max-w-prose text-muted-foreground">
+          {repo.description || "Нет описания"}
+        </p>
         <div className="flex flex-wrap gap-2">
           {repo.topics?.map((topic) => (
             <Badge
@@ -45,25 +46,25 @@ export function RepoDetails({
           <div className="flex items-center gap-1">
             <RiStarFill className="text-yellow-400" size={14} />
             <span className="text-xs font-medium">
-              {repo.stargazers_count?.toLocaleString()}
+              {repo.stargazers_count?.toLocaleString() ?? 0}
             </span>
           </div>
           <div className="flex items-center gap-1">
             <RiGitForkLine size={14} />
             <span className="text-xs font-medium">
-              {repo.forks_count?.toLocaleString()}
+              {repo.forks_count?.toLocaleString() ?? 0}
             </span>
           </div>
           <div className="flex items-center gap-1">
             <span
               className="h-2.5 w-2.5 rounded-full"
               style={{
-                background:
-                  languageColors[repo.language || ""] ||
-                  languageColors["Default"],
+                background: languageColors[repo.language || "Default"],
               }}
             />
-            <span className="text-xs font-medium">{repo.language}</span>
+            <span className="text-xs font-medium">
+              {repo.language || "Не указано"}
+            </span>
           </div>
         </div>
       </main>
@@ -80,14 +81,16 @@ export function RepoDetails({
               <span className="text-xs font-normal text-muted-foreground">
                 Лицензия
               </span>
-              <span className="text-sm font-medium">{repo.license?.name}</span>
+              <span className="text-sm font-medium">
+                {repo.license?.name || "Не указана"}
+              </span>
             </div>
             <div className="flex flex-col gap-1">
               <span className="text-xs font-normal text-muted-foreground">
                 Обновлено
               </span>
               <time
-                dateTime={String(repo.updated_at)}
+                dateTime={repo.updated_at || ""}
                 className="text-sm font-medium"
               >
                 {formattedDate}
@@ -98,7 +101,7 @@ export function RepoDetails({
                 Открытых issue
               </span>
               <span className="text-sm font-medium">
-                {repo.open_issues_count?.toLocaleString()}
+                {repo.open_issues_count?.toLocaleString() ?? 0}
               </span>
             </div>
           </CardContent>

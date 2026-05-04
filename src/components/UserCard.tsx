@@ -22,12 +22,12 @@ export function UserCard({ user }: { user: GithubUser }) {
     <Card className="w-full max-w-sm overflow-hidden pt-0">
       <div className="relative h-24 w-full">
         <img
-          src={user.avatar_url || "https://via.placeholder.com/150"}
+          src={user.avatar_url}
           alt="User avatar"
           className="h-full w-full object-cover blur-sm brightness-60"
         />
         <img
-          src={user.avatar_url || "https://via.placeholder.com/150"}
+          src={user.avatar_url}
           alt="User avatar round"
           className="absolute -bottom-8 left-4 h-16 w-16 rounded-full border-4 border-background"
         />
@@ -36,15 +36,15 @@ export function UserCard({ user }: { user: GithubUser }) {
         <CardAction>
           <Badge variant="secondary">
             <RiHeartFill className="text-primary" />
-            <span>{user.followers || 0}</span>
+            <span>{user.followers}</span>
           </Badge>
         </CardAction>
 
-        <CardTitle>{user.name || "Неизвестное имя"}</CardTitle>
+        <CardTitle>{user.name || "Не указано"}</CardTitle>
 
         <span className="flex gap-1">
           <RiMapPinLine size={18} className="text-primary" />
-          {user.location || "Неизвестная локация"}
+          {user.location || "Не указано"}
         </span>
 
         <CardDescription>{user.bio || "Нет описания"}</CardDescription>

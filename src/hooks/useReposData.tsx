@@ -13,7 +13,6 @@ export const useReposData = () => {
     async () =>
       await octokit.rest.repos.listForUser({
         username: login,
-        per_page: 30,
       }),
     [login]
   )

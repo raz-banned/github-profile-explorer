@@ -88,7 +88,7 @@ export function UserRepos({
                 <CardAction>
                   <Badge variant="outline" className="flex gap-1">
                     <RiStarFill className="text-yellow-400" />
-                    <span>{repo.stargazers_count}</span>
+                    <span>{repo.stargazers_count ?? 0}</span>
                   </Badge>
                 </CardAction>
                 <CardTitle className="truncate text-base">
@@ -101,12 +101,10 @@ export function UserRepos({
                     <span
                       className="h-2.5 w-2.5 rounded-full"
                       style={{
-                        background:
-                          languageColors[repo.language || ""] ||
-                          languageColors["Default"],
+                        background: languageColors[repo.language || "Default"],
                       }}
                     />
-                    {repo.language || "Неизвестно"}
+                    {repo.language || "Не указано"}
                   </Badge>
                 </CardAction>
               </CardFooter>
