@@ -32,13 +32,15 @@ export function UserRepos({
       })
   }, [activeLanguage, userRepos, sortType])
 
-  const languages = [
-    ...new Set(
-      userRepos
-        .map((repo) => repo.language)
-        .filter((language): language is string => Boolean(language))
-    ),
-  ]
+  const languages = useMemo(() => {
+    return [
+      ...new Set(
+        userRepos
+          .map((repo) => repo.language)
+          .filter((language): language is string => Boolean(language))
+      ),
+    ]
+  }, [userRepos])
 
   return (
     <div className="flex w-full max-w-4xl flex-col gap-4">

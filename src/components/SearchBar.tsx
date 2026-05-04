@@ -3,13 +3,17 @@ import { Field, FieldDescription, FieldLabel } from "./ui/field"
 import { Input } from "./ui/input"
 import { Button } from "./ui/button"
 import { useNavigate } from "react-router"
+import { useErrorContext } from "@/hooks/useErrorContext"
 
 export function SearchBar() {
   const [searchQuery, setSearchQuery] = useState("")
   const navigate = useNavigate()
+  const { setUserError, setReposError } = useErrorContext()
 
   const handleSearch = () => {
     if (!searchQuery.trim()) return
+    setUserError(null)
+    setReposError(null)
     navigate(`/user/${searchQuery}`)
   }
 
