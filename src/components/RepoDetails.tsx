@@ -59,7 +59,8 @@ export function RepoDetails({
             <span
               className="h-2.5 w-2.5 rounded-full"
               style={{
-                background: languageColors[repo.language || "Default"],
+                background:
+                  languageColors[repo.language || ""] || languageColors.Default,
               }}
             />
             <span className="text-xs font-medium">

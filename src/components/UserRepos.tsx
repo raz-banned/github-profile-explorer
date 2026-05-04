@@ -103,7 +103,9 @@ export function UserRepos({
                     <span
                       className="h-2.5 w-2.5 rounded-full"
                       style={{
-                        background: languageColors[repo.language || "Default"],
+                        background:
+                          languageColors[repo.language || ""] ||
+                          languageColors.Default,
                       }}
                     />
                     {repo.language || "Не указано"}
